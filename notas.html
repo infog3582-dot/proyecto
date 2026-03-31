@@ -1,32 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Notas</title>
+  <title>Gestión de Notas</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-  <h2>Notas del Estudiante</h2>
+  <h2>Gestión de Notas del Estudiante</h2>
 
-  <table id="tablaNotas" border="1">
-    <tr>
-      <th>Materia</th>
-      <th>Nota</th>
-    </tr>
-    <tr>
-      <td>Matemáticas</td>
-      <td>4.5</td>
-    </tr>
-    <tr>
-      <td>Programación</td>
-      <td>4.8</td>
-    </tr>
+  <!-- BUSCADOR -->
+  <input type="text" id="buscador" placeholder="Buscar materia..." onkeyup="filtrarTabla()">
+
+  <!-- FORMULARIO -->
+  <h3>Agregar nueva nota</h3>
+  <input type="text" id="materia" placeholder="Materia">
+  <input type="number" id="nota" placeholder="Nota (0-5)">
+  <button id="btnAgregar" onclick="agregarNota()">Agregar</button>
+
+  <p id="mensajeNotas"></p>
+
+  <!-- TABLA -->
+  <table id="tablaNotas" border="1" style="margin:auto; margin-top:15px;">
+    <thead>
+      <tr>
+        <th>Materia</th>
+        <th>Nota</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="cuerpoTabla">
+      <tr>
+        <td>Matemáticas</td>
+        <td>4.5</td>
+        <td>
+          <button onclick="eliminarFila(this)">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>Programación</td>
+        <td>4.8</td>
+        <td>
+          <button onclick="eliminarFila(this)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 
-  <button onclick="logout()">Cerrar sesión</button>
+  <!-- PROMEDIO -->
+  <h3 id="promedio">Promedio: 0</h3>
+  <button id="btnCalcular" onclick="calcularPromedio()">Calcular Promedio</button>
+
+  <!-- NAVEGACION -->
+  <button id="btnVolver" onclick="window.location.href='dashboard.html'">Volver</button>
+  <button id="btnLogout" onclick="logout()">Cerrar sesión</button>
+
 </div>
 
 <script src="script.js"></script>
+
+<script>
+function agregarNota() {
+  let materia = document.getElementById("materia").value;
+  let nota = document.getElementById("nota").value;
+
+  if (materia === "" || nota === "") {
+    document.getElementById("mensajeNotas").innerText = "Campos obligatorios";
+    return;
+  }
+
+  if (nota < 0 || nota > 5) {
+    document.getElementById("mensajeNotas").innerText = "Nota inválida (0-5)";
+    return;
+  }
+
+  let tabla = document.getElementById("cuerpoTabla");
+  let fila = tabla.insertRow();
+
+  fila.insertCell(0).innerText = materia;
+  fila.insertCell(1).innerText = nota;
+
+  let celdaAccion = fila.insertCell(2);
+  celdaAccion.innerHTML = '<button onclick="eliminarFila(this)">Eliminar</button>';
+
+  document.getElementById("mensajeNotas").innerText = "Nota agregada correctamente";
+}
+
+function eliminarFila(btn) {
+  let fila = btn.parentNode.parentNode;
+  fila.remove();
+}
+
+function calcularPromedio() {
+  let filas = document.querySelectorAll("#cuerpoTabla tr");
+  let suma = 0;
+  let count = 0;
+
+  filas.forEach(f => {
+    let nota = parseFloat(f.cells[1].innerText);
+    suma += nota;
+    count++;
+  });
+
+  let promedio = (suma / count).toFixed(2);
+  document.getElementById("promedio").innerText = "Promedio: " + promedio;
+}
+
+function filtrarTabla() {
+  let filtro = document.getElementById("buscador").value.toLowerCase();
+  let filas = document.querySelectorAll("#cuerpoTabla tr");
+
+  filas.forEach(f => {
+    let materia = f.cells[0].innerText.toLowerCase();
+    f.style.display = materia.includes(filtro) ? "" : "none";
+  });
+}
+</script>
+
 </body>
 </html>
