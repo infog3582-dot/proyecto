@@ -1,18 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Panel</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Panel - Sistema Educativo</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c7be5, #00c6ff);
+      color: white;
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      width: 250px;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 20px;
+      background: #2c7be5;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1a5fd0;
+    }
+
+    .logout {
+      display: block;
+      margin: 40px auto;
+      padding: 12px 25px;
+      background: red;
+      color: white;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout:hover {
+      background: darkred;
+    }
+
+  </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2 id="bienvenida">Bienvenido al sistema</h2>
-
-  <a href="notas.html" id="btnNotas">Consultar Notas</a>
-  <button id="btnLogout" onclick="logout()">Cerrar sesión</button>
+<div class="header" id="bienvenida">
+  🎓 Bienvenido al Sistema Educativo
 </div>
 
-<script src="script.js"></script>
+<div class="container">
+
+  <!-- TARJETA NOTAS -->
+  <div class="card">
+    <div class="icon">📊</div>
+    <h3>Gestión de Notas</h3>
+    <p>Consulta, agrega y administra notas académicas.</p>
+    <button id="btnNotas" class="btn" onclick="irNotas()">Ingresar</button>
+  </div>
+
+  <!-- TARJETA REGISTRO -->
+  <div class="card">
+    <div class="icon">📝</div>
+    <h3>Registro de Usuario</h3>
+    <p>Crear nuevos usuarios en el sistema.</p>
+    <button id="btnRegistro" class="btn" onclick="irRegistro()">Ingresar</button>
+  </div>
+
+  <!-- TARJETA PERFIL -->
+  <div class="card">
+    <div class="icon">👤</div>
+    <h3>Perfil</h3>
+    <p>Visualizar información del usuario.</p>
+    <button id="btnPerfil" class="btn" onclick="verPerfil()">Ver</button>
+  </div>
+
+</div>
+
+<button id="btnLogout" class="logout" onclick="logout()">Cerrar sesión</button>
+
+<script>
+function irNotas() {
+  window.location.href = "notas.html";
+}
+
+function irRegistro() {
+  window.location.href = "registro.html";
+}
+
+function verPerfil() {
+  alert("Usuario: admin");
+}
+
+function logout() {
+  window.location.href = "index.html";
+}
+</script>
+
 </body>
 </html>
