@@ -128,7 +128,11 @@ function login() {
     return;
   }
 
-  if (u === "admin" && p === "123") {
+  // VALIDACIÓN DOS USUARIOS
+  if (
+    (u === "admin" && p === "123") ||
+    (u === "usuario" && p === "123")
+  ) {
     window.location.href = "dashboard.html";
   } else {
     document.getElementById("mensaje").innerText = "Credenciales incorrectas";
