@@ -1,24 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Registro</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Registro - Sistema Educativo</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c7be5, #00c6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      width: 380px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 95%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2c7be5;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 25px;
+      background: #2c7be5;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #1a5fd0;
+      transform: scale(1.03);
+    }
+
+    #mensaje {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+
+    a {
+      display: block;
+      margin-top: 15px;
+      text-decoration: none;
+      color: #2c7be5;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Registro de Usuario</h2>
+<div class="card">
 
-  <input id="nuevoUsuario" placeholder="Usuario">
-  <input id="correo" placeholder="Correo">
+  <h2>📝 Registro de Usuario</h2>
 
-  <button id="btnRegistro" onclick="registrar()">Registrar</button>
+  <input id="nombre" placeholder="Nombre completo">
+  <input id="usuario" placeholder="Usuario">
+  <input id="correo" placeholder="Correo electrónico">
+  <input id="password" type="password" placeholder="Contraseña">
+  <input id="confirmar" type="password" placeholder="Confirmar contraseña">
 
-  <p id="mensajeRegistro"></p>
+  <button id="btnRegistro" onclick="registrar()">Registrarse</button>
 
-  <a href="login.html">Volver</a>
+  <p id="mensaje"></p>
+
+  <a href="login.html" id="volverLogin">Volver al login</a>
+
 </div>
 
-<script src="script.js"></script>
+<script>
+
+function registrar() {
+  let nombre = document.getElementById("nombre").value;
+  let usuario = document.getElementById("usuario").value;
+  let correo = document.getElementById("correo").value;
+  let password = document.getElementById("password").value;
+  let confirmar = document.getElementById("confirmar").value;
+
+  let mensaje = document.getElementById("mensaje");
+
+  // VALIDACIÓN CAMPOS VACÍOS
+  if (nombre === "" || usuario === "" || correo === "" || password === "" || confirmar === "") {
+    mensaje.innerText = "Todos los campos son obligatorios";
+    mensaje.className = "error";
+    return;
+  }
+
+  // VALIDACIÓN CORREO
+  if (!correo.includes("@")) {
+    mensaje.innerText = "Correo inválido";
+    mensaje.className = "error";
+    return;
+  }
+
+  // VALIDACIÓN CONTRASEÑA
+  if (password.length < 3) {
+    mensaje.innerText = "La contraseña debe tener mínimo 3 caracteres";
+    mensaje.className = "error";
+    return;
+  }
+
+  // VALIDACIÓN CONFIRMACIÓN
+  if (password !== confirmar) {
+    mensaje.innerText = "Las contraseñas no coinciden";
+    mensaje.className = "error";
+    return;
+  }
+
+  // REGISTRO EXITOSO
+  mensaje.innerText = "Usuario registrado correctamente";
+  mensaje.className = "success";
+}
+
+</script>
+
 </body>
 </html>
