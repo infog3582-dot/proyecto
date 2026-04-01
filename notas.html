@@ -1,46 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Gestión de Notas</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Notas - Sistema Educativo</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c7be5, #00c6ff);
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      background: white;
+      color: black;
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    input {
+      padding: 10px;
+      margin: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 20px;
+      background: #2c7be5;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: #1a5fd0;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #2c7be5;
+      color: white;
+    }
+
+    .acciones button {
+      background: red;
+    }
+
+    .acciones button:hover {
+      background: darkred;
+    }
+
+    #mensaje {
+      font-weight: bold;
+      margin-top: 10px;
+      color: red;
+    }
+
+    .top-actions {
+      text-align: center;
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+  </style>
 </head>
+
 <body>
 
+<div class="header">
+  📊 Gestión de Notas
+</div>
+
 <div class="container">
-  <h2>Gestión de Notas del Estudiante</h2>
 
   <!-- BUSCADOR -->
-  <input type="text" id="buscador" placeholder="Buscar materia..." onkeyup="filtrarTabla()">
+  <div class="top-actions">
+    <input type="text" id="buscador" placeholder="Buscar materia..." onkeyup="filtrarTabla()">
+  </div>
 
   <!-- FORMULARIO -->
-  <h3>Agregar nueva nota</h3>
-  <input type="text" id="materia" placeholder="Materia">
-  <input type="number" id="nota" placeholder="Nota (0-5)">
+  <h3>Agregar Nota</h3>
+  <input id="materia" placeholder="Materia">
+  <input id="nota" type="number" placeholder="Nota (0-5)">
   <button id="btnAgregar" onclick="agregarNota()">Agregar</button>
 
-  <p id="mensajeNotas"></p>
+  <p id="mensaje"></p>
 
   <!-- TABLA -->
-  <table id="tablaNotas" border="1" style="margin:auto; margin-top:15px;">
+  <table id="tablaNotas">
     <thead>
       <tr>
         <th>Materia</th>
         <th>Nota</th>
-        <th>Acciones</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody id="cuerpoTabla">
       <tr>
         <td>Matemáticas</td>
         <td>4.5</td>
-        <td>
+        <td class="acciones">
           <button onclick="eliminarFila(this)">Eliminar</button>
         </td>
       </tr>
       <tr>
         <td>Programación</td>
         <td>4.8</td>
-        <td>
+        <td class="acciones">
           <button onclick="eliminarFila(this)">Eliminar</button>
         </td>
       </tr>
@@ -49,28 +144,29 @@
 
   <!-- PROMEDIO -->
   <h3 id="promedio">Promedio: 0</h3>
-  <button id="btnCalcular" onclick="calcularPromedio()">Calcular Promedio</button>
+  <button id="btnPromedio" onclick="calcularPromedio()">Calcular Promedio</button>
 
-  <!-- NAVEGACION -->
-  <button id="btnVolver" onclick="window.location.href='dashboard.html'">Volver</button>
-  <button id="btnLogout" onclick="logout()">Cerrar sesión</button>
+  <!-- NAVEGACIÓN -->
+  <div class="nav-buttons">
+    <button id="btnVolver" onclick="window.location.href='dashboard.html'">Volver</button>
+    <button id="btnLogout" onclick="logout()">Cerrar sesión</button>
+  </div>
 
 </div>
 
-<script src="script.js"></script>
-
 <script>
+
 function agregarNota() {
   let materia = document.getElementById("materia").value;
   let nota = document.getElementById("nota").value;
 
   if (materia === "" || nota === "") {
-    document.getElementById("mensajeNotas").innerText = "Campos obligatorios";
+    document.getElementById("mensaje").innerText = "Campos obligatorios";
     return;
   }
 
   if (nota < 0 || nota > 5) {
-    document.getElementById("mensajeNotas").innerText = "Nota inválida (0-5)";
+    document.getElementById("mensaje").innerText = "Nota inválida (0-5)";
     return;
   }
 
@@ -80,29 +176,25 @@ function agregarNota() {
   fila.insertCell(0).innerText = materia;
   fila.insertCell(1).innerText = nota;
 
-  let celdaAccion = fila.insertCell(2);
-  celdaAccion.innerHTML = '<button onclick="eliminarFila(this)">Eliminar</button>';
+  let accion = fila.insertCell(2);
+  accion.innerHTML = '<button onclick="eliminarFila(this)">Eliminar</button>';
 
-  document.getElementById("mensajeNotas").innerText = "Nota agregada correctamente";
+  document.getElementById("mensaje").innerText = "Nota agregada correctamente";
 }
 
 function eliminarFila(btn) {
-  let fila = btn.parentNode.parentNode;
-  fila.remove();
+  btn.parentNode.parentNode.remove();
 }
 
 function calcularPromedio() {
   let filas = document.querySelectorAll("#cuerpoTabla tr");
   let suma = 0;
-  let count = 0;
 
   filas.forEach(f => {
-    let nota = parseFloat(f.cells[1].innerText);
-    suma += nota;
-    count++;
+    suma += parseFloat(f.cells[1].innerText);
   });
 
-  let promedio = (suma / count).toFixed(2);
+  let promedio = (suma / filas.length).toFixed(2);
   document.getElementById("promedio").innerText = "Promedio: " + promedio;
 }
 
@@ -115,6 +207,11 @@ function filtrarTabla() {
     f.style.display = materia.includes(filtro) ? "" : "none";
   });
 }
+
+function logout() {
+  window.location.href = "index.html";
+}
+
 </script>
 
 </body>
